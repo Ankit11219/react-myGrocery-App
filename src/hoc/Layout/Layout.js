@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Aux from '../Auxiliary/Auxiliary';
 import classes from './Layout.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -11,18 +12,19 @@ class Layout extends Component {
     }
 
     sideDrawerClosedHandler = () => {
-        this.setState({showSideDrawer: false});
+        this.setState({ showSideDrawer: false });
     }
 
     sideDrawerOpenHandler = () => {
-        this.setState({showSideDrawer: true});
+        this.setState({ showSideDrawer: true });
     }
 
     render() {
         return (
             <Aux>
                 <Toolbar drawerOpenClicked={this.sideDrawerOpenHandler} />
-                <SideDrawer isOpen={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler}/>
+                <SideDrawer isOpen={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler}
+                    userName={this.props.userName} />
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>
@@ -31,4 +33,10 @@ class Layout extends Component {
     }
 };
 
-export default Layout;
+const mapStateToProps = state => {
+    return {
+        userName: state.auth.userInfo ? state.auth.userInfo.name : ''
+    };
+};
+
+export default connect(mapStateToProps, null)(Layout);

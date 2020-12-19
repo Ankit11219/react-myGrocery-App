@@ -13,7 +13,14 @@ const sideDrawer = (props) => {
         <Aux>
             <Backdrop show={props.isOpen} clicked={props.closed} />
             <div className={attachedClasses.join(' ')}>
-                <Logo height="11%" />
+                <Logo height="50px" >
+                    <div className={classes.UserInfo}>
+                        <div style={{fontWeight: 600}}>Welcome</div>
+                        <div style={{fontStyle: 'italic'}}>{props.userName}</div>
+                    </div>
+                </Logo>
+
+
             </div>
         </Aux>);
 }

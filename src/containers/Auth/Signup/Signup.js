@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import classes from './Signup.css';
 import Input from '../../../components/UI/Input/Input';
 import Button from '../../../components/UI/Button/Button';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import axios from '../../../apiCall-axios';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/action/index';
+import { connect } from 'react-redux';
 
 class Signup extends Component {
     state = {
@@ -23,15 +28,14 @@ class Signup extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'number',
-                    placeholder: 'Mobile No.'
+                    placeholder: 'Mobile No. (Optional)'
                 },
                 value: '',
                 validation: {
-                    required: true,
                     isPhone: true
                 },
-                valid: false,
-                touched: false
+                valid: true,
+                touched: true
             },
             email: {
                 elementType: 'input',
@@ -86,8 +90,12 @@ class Signup extends Component {
         }
 
         if (rules.isPhone) {
-            const pattern = /^\d{10}$/;
-            isValid = pattern.test(value) && isValid;
+            if (value.trim()) {
+                const pattern = /^[1-9][0-9]{9}$/;
+                isValid = pattern.test(value) && isValid;
+            }
+            else
+                isValid = true;
         }
 
         if (rules.isPassword) {
@@ -118,6 +126,30 @@ class Signup extends Component {
         this.setState({ signupForm: updatedSignupForm, formIsValid: formIsValid });
     }
 
+    switchToLogin = () => {
+        console.log(this.props);
+        this.props.history.push('/login');
+    }
+
+    submitSignup = (e) => {
+        e.preventDefault();
+        // this.setState({ loading: true });
+        const submitPaylod = {};
+        for (let key in this.state.signupForm) {
+            submitPaylod[key] = this.state.signupForm[key].value;
+        }
+
+        this.props.signup(submitPaylod);
+
+        // axios.post('/users/signup', submitPaylod).then(res => {
+        //     console.log(res);
+        //     this.setState({ loading: false });
+        // }).catch(err => {
+        //     console.log(err);
+        //     this.setState({ loading: false });
+        // })
+    }
+
     render() {
         const formElementArray = [];
         for (let key in this.state.signupForm) {
@@ -139,15 +171,37 @@ class Signup extends Component {
                 changed={(event) => this.inputChangedHandler(event, formElement.id)} />
         ));
 
+        let signupForm = (<form>
+            {form}
+            <Button btnType="Success" disabled={!this.state.formIsValid} clicked={(e) => this.submitSignup(e)}>SUBMIT</Button>
+        </form>);
+        if (this.props.loading) {
+            signupForm = <Spinner />
+        }
+
         return (
             <div className={classes.Signup}>
-                <form>
+                {signupForm}
+                {/* <form>
                     {form}
-                    <Button btnType="Success" disabled={!this.state.formIsValid}>SUBMIT</Button>
-                </form>
+                    <Button btnType="Success" disabled={!this.state.formIsValid} clicked={(e) => this.submitSignup(e)}>SUBMIT</Button>
+                </form> */}
+                <Button btnType="Danger" clicked={() => this.switchToLogin()}>SWITCH TO LOGIN</Button>
             </div>
         );
     }
 }
 
-export default Signup;
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signup: (signupPayload) => dispatch(actions.signup(signupPayload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler(Signup, axios));
