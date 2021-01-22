@@ -12,11 +12,19 @@
   transition: transform 0.3s ease-out;
 }
 
+.SideDrawerHeader {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: auto 1fr;
+  justify-items: start;
+  grid-column-gap: 10px;
+  align-items: center;
+}
+
 .UserInfo {
   overflow: hidden;
   display: block;
   text-overflow: ellipsis;
-  margin-left: 10px;
 }
 
 @media (min-width: 500px) {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import Aux from '../Auxiliary/Auxiliary';
 import classes from './Layout.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -19,12 +20,17 @@ class Layout extends Component {
         this.setState({ showSideDrawer: true });
     }
 
+    redirectLogin = () => {
+        console.log("redirect login", this.props);
+        this.props.history.push('/login');
+    }
+
     render() {
         return (
             <Aux>
                 <Toolbar drawerOpenClicked={this.sideDrawerOpenHandler} />
                 <SideDrawer isOpen={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler}
-                    userName={this.props.userName} />
+                    userName={this.props.userName} authenticate={this.redirectLogin} />
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>
@@ -39,4 +45,5 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, null)(Layout);
+const LayoutWithRouter = withRouter(Layout);
+export default connect(mapStateToProps, null)(LayoutWithRouter);

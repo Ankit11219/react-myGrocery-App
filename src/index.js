@@ -8,10 +8,12 @@ import './index.css';
 import App from './App';
 import authReducer from './store/reducer/auth';
 import registerServiceWorker from './registerServiceWorker';
+import categoryReducer from './store/reducer/category';
 
 // combine multiple reducer into one and pass to the store
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    category: categoryReducer
 });
 
 //Middleware like express
@@ -28,7 +30,7 @@ const logger = store => {
 // Redux developer tool
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // create store first argument is reducer and second is pass the middleWares
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk,logger)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, logger)));
 
 const app = (
     <Provider store={store}>

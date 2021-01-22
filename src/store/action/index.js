@@ -1,4 +1,8 @@
 export {
     login,
-    signup
-} from './auth.js'; 
+    signup,
+} from './auth.js';
+
+export {
+    createCategory
+} from './category'; 

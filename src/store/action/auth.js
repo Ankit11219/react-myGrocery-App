@@ -2,47 +2,47 @@ import * as actionTypes from '../actionTypes/auth';
 import axios from '../../apiCall-axios';
 
 
-export const loginStart = () => {
+const loginStart = () => {
     return {
         type: actionTypes.LOGIN_START
     };
 };
 
-export const loginSuccess = (response) => {
+const loginSuccess = (response) => {
     return {
         type: actionTypes.LOGIN_SUCCESS,
         content: response.data
     };
 };
 
-export const loginFail = (error) => {
+const loginFail = (error) => {
     return {
         type: actionTypes.LOGIN_FAIL,
         error: error
     };
 };
 
-export const signupStart = () => {
+const signupStart = () => {
     return {
         type: actionTypes.SIGNUP_START
     };
 };
 
-export const signupSuccess = (response) => {
+const signupSuccess = (response) => {
     return {
         type: actionTypes.SIGNUP_SUCCESS,
         content: response.data
     };
 };
 
-export const signupFail = (error) => {
+const signupFail = (error) => {
     return {
         type: actionTypes.SIGNUP_FAIL,
         error: error
     };
 };
 
-export const logout = () => {
+const logout = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
     };
